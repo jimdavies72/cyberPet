@@ -32,28 +32,28 @@ class CyberPet {
   }
   set hunger(value) {
     console.log("temp", value)
-    this._hunger += value;
+    this._hunger = value;
   }
 
   get thirst() {
     return this._thirst;
   }
   set thirst(value) {
-    this._thirst += value;
+    this._thirst = value;
   }
 
   get happiness() {
     return this._happiness;
   }
   set happiness(value) {
-    this._happiness += value;
+    this._happiness = value;
   }
 
   get tiredness() {
     return this._tiredness;
   }
   set tiredness(value) {
-    this._tiredness += value;
+    this._tiredness = value;
   }
 
   get isAlive() {
@@ -88,7 +88,7 @@ class CyberPet {
     this.hunger += 10;
     this.thirst += 15;
     this.happiness += 20;
-    this.tiredness += 200;
+    this.tiredness += 20;
   }
 
 }
@@ -162,9 +162,11 @@ class Rabbit extends CyberPet {
     this.happiness += 10;
     this.tiredness += 20;
   }
+
+
 }
 
-rover = new Dog("Rover", 3, 10, 10, 10, 10)
-console.log(rover.listPetStats())
-rover.fetch()
-console.log(rover.listPetStats());
+bugs = new Rabbit("bugs", 3, 10, 10, 10, 10)
+console.log(bugs.listPetStats())
+bugs.stroke()
+console.log(bugs.listPetStats());
