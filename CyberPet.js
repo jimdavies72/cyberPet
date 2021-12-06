@@ -1,5 +1,4 @@
 // this is the super pet
-
 class CyberPet {
   static counter = 0;
 
@@ -63,32 +62,28 @@ class CyberPet {
     this._isAlive = value;
   }
 
+  updateStats(hunger, thirst, happiness, tiredness){
+    this.hunger += hunger;
+    this.thirst += thirst;
+    this.happiness += happiness;
+    this.tiredness += tiredness;
+
+  }
+
   feed() {
-    this.hunger += -10;
-    this.thirst += 10;
-    this.happiness += 10;
-    this.tiredness += 10;
+    this.updateStats(-10, 10, 10, 10);
   }
 
   giveWater(){
-    this.hunger += 5;
-    this.thirst += -10;
-    this.happiness += 5;
-    this.tiredness += -5;
+    this.updateStats(5, 10, 5, -5);
   }
 
   sleep(){
-    this.hunger += 20;
-    this.thirst += 20;
-    this.happiness += 10;
-    this.tiredness += -20;
+    this.updateStats(20, 20, 10, -20);
   }
 
   play(){
-    this.hunger += 10;
-    this.thirst += 15;
-    this.happiness += 20;
-    this.tiredness += 20;
+    this.updateStats(10, 15, 20, 20);
   }
 
 }
@@ -99,25 +94,17 @@ class Dog extends CyberPet {
   }
 
   fetch(){
-    this.hunger += 5;
-    this.thirst += 5;
-    this.happiness += 5;
-    this.tiredness += 20;
+    this.updateStats(5, 5, 5, 20);
+  
   }
 
   swim(){
-    this.hunger += 5;
-    this.thirst += -20;
-    this.happiness += 10;
-    this.tiredness += 15;
+    this.updateStats(5, -20, 10, 15);
 
   }
 
   tugOfWar(){
-    this.hunger += 10;
-    this.thirst += 10;
-    this.happiness += 20;
-    this.tiredness += 25;
+    this.updateStats(10, 10, 20, 25);
 
   }
 
@@ -129,17 +116,13 @@ class Cat extends CyberPet {
   }
 
   stroke(){
-    this.hunger += 5;
-    this.thirst += 5;
-    this.happiness += 30;
-    this.tiredness += 30;
+    this.updateStats(5, 5, 30, 30);
+
   }
 
   letOut(){
-    this.hunger += 10;
-    this.thirst += 10;
-    this.happiness += 10;
-    this.tiredness += 20;
+    this.updateStats(10, 10, 10, 20);
+    
   }
 
 }
@@ -149,21 +132,15 @@ class Rabbit extends CyberPet {
     super(petName, age, hunger, thirst, happiness, tiredness);
   }
 
-  stroke() {
-    this.hunger += 0;
-    this.thirst += 5;
-    this.happiness += 10;
-    this.tiredness += 10;
+  stroke(){
+    this.updateStats(2, 5, 10, 10);
+    
   }
 
-  runAround() {
-    this.hunger += 10;
-    this.thirst += 10;
-    this.happiness += 10;
-    this.tiredness += 20;
+  runAround(){
+    this.updateStats(10, 10, 10, 20);
+  
   }
-
-
 }
 
 bugs = new Rabbit("bugs", 3, 10, 10, 10, 10)
