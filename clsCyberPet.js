@@ -19,6 +19,7 @@ module.exports = class CyberPet {
     return this._hunger;
   }
   set hunger(value) {
+    
     this._hunger = value;
   }
 
@@ -50,6 +51,27 @@ module.exports = class CyberPet {
     this._isAlive = value;
   }
 
+  get age() {
+    return this._age;
+  }
+  set age(value) {
+    this._age = value;
+  }
+
+  get maxAge() {
+    return this._maxAge;
+  }
+  set maxAge(value) {
+    this._maxAge = value;
+  }
+
+  get ageCounter() {
+    return this.ageCounter;
+  }
+  set ageCounter(value) {
+    this.ageCounter = value;
+  }
+
   get generalHealth() {
     return this._generalHealth;
   }
@@ -70,12 +92,17 @@ module.exports = class CyberPet {
     };
   };
 
+  //TODO: perhaps have it so each animal passes different values. at the moment they are static across all animals.
   updateStats = (hunger, thirst, happiness, tiredness, generalHealth) => {
-    this.hunger += hunger;
+    let currentHunger = this.hunger;
+    currentHunger += hunger;
+    console.log("current Hunger", currentHunger)
+    //this.hunger = currentHunger;
     this.thirst += thirst;
     this.happiness += happiness;
     this.tiredness += tiredness;
     this.generalHealth += generalHealth;
+    this.#lifeTick();
     this.checkStats();
     //TODO: add game over scenario
     if (this._isAlive === false) {
@@ -85,16 +112,21 @@ module.exports = class CyberPet {
 
   //TODO: checkStats currently only checks if pet is alive, need to check too tired/bored
   checkStats = () => {
-    const object = this.listPetStats();
-    for (let [key, value] of Object.entries(object)) {
-      if (key === "hunger" && value <= 0) {
-        this._isAlive = false;
-      } else if (key === "thirst" && value >= 100) {
-        this._isAlive = false;
-      } else if (key === "generalHealth" && value <= 0) {
-        this._isAlive = false;
-      } else {
-        this._isAlive = true;
+    if (CyberPet.isRandomEvent(100)) {
+      // random unexplained death, because life is just like that.
+      this._isAlive = false;
+    } else {
+      const object = this.listPetStats();
+      for (let [key, value] of Object.entries(object)) {
+        if (key === "hunger" && value <= 0) {
+          this._isAlive = false;
+        } else if (key === "thirst" && value >= 100) {
+          this._isAlive = false;
+        } else if (key === "generalHealth" && value <= 0) {
+          this._isAlive = false;
+        } else {
+          this._isAlive = true;
+        }
       }
     }
   };
@@ -111,6 +143,20 @@ module.exports = class CyberPet {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  #lifeTick = () => {
+    // Age continues...
+    this.updateStats(2, 1, -2, 2, -2)
+    this.ageCounter++
+    if(this.ageCounter >= 5){
+      this.age++
+    }
+
+    if (this.age >= this.maxAge){
+      //goodnight old sport!
+      this.isAlive = false;
+    }
   };
 
   feed() {
@@ -141,12 +187,13 @@ module.exports = class CyberPet {
   }
 
   play() {
-    if (this.isRandomEvent(20)) {
-      //accidental injury
-      this.updateStats(5, 10, -20, 20, -20);
-    } else {
-      this.updateStats(10, 15, 20, 20, 1);
-    }
+    this.updateStats(5, 10, -20, 20, -20);
+    // if (this.isRandomEvent(20)) {
+    //   //accidental injury
+    //   this.updateStats(5, 10, -20, 20, -20);
+    // } else {
+    //   this.updateStats(10, 15, 20, 20, 1);
+    // }
   }
 
   visitVet() {
@@ -159,101 +206,3 @@ module.exports = class CyberPet {
   }
 };
 
-
-
-// class Dog extends CyberPet {
-//   constructor(petName,hunger, thirst, happiness, tiredness) {
-    
-//     //randomise the maximum pet age
-//     const maxAge = CyberPet.getRandomInt(12, 17)
-//     super(petName, maxAge, hunger, thirst, happiness, tiredness);
-//   }
-
-//   fetch(){
-//     if (this.isRandomEvent(50)){
-//       // dog swallows ball
-//       this.updateStats(0, 10, -20, 10, -30);
-//     }else{
-//       this.updateStats(0, 10, 5, 10, 0);
-//     }
-  
-//   }
-
-//   swim(){
-//     if (this.isRandomEvent(2)){
-//       //best day ever!
-//       this.updateStats(0, 10, 30, 20, 2);
-//     }else{
-//       this.updateStats(0, -10, 10, 15, -1);
-//     }
-//   }
-
-//   tugOfWar(){
-//     if (this.isRandomEvent(4)){
-//       //exhausting day
-//       this.updateStats(10, 10, 20, 30, -1);
-//     }else{
-//       this.updateStats(0, 10, 20, 20, -1);
-//     }
-//   }
-
-// }
-
-// class Cat extends CyberPet {
-//   constructor(petName, hunger, thirst, happiness, tiredness) {
-//     //randomise the maximum pet age
-//     const maxAge = CyberPet.getRandomInt(10, 15);
-//     super(petName, maxAge, hunger, thirst, happiness, tiredness);
-//   }
-
-//   stroke(){
-//     if (this.isRandomEvent(10)){
-//       //cat falls asleep and rolls off couch
-//       this.updateStats(0, 5, -10, 20, -5);
-//     }else{
-//       this.updateStats(0, 0, 30, 30, 0);
-//     }
-//   }
-
-//   letOut(){
-//     if (this.isRandomEvent(2)){
-//       //mouse catcher extrordinaire! best day ever!
-//       this.updateStats(-20, 10, 30, 20, -4);
-//     }else{
-//       this.updateStats(-10, -10, 10, 20, -1);
-//     }
-    
-//   }
-
-// }
-
-// class Rabbit extends CyberPet {
-//   constructor(petName, hunger, thirst, happiness, tiredness) {
-//     //randomise the maximum pet age
-//     const maxAge = CyberPet.getRandomInt(6, 10);
-//     super(petName, maxAge, hunger, thirst, happiness, tiredness);
-//   }
-
-//   stroke(){
-//     if (this.isRandomEvent(30)){
-//       //hibernates
-//       this.updateStats(40, 40, 10, 40, -10);
-//     }else{
-//       this.updateStats(0, 0, 10, 10, 1);
-//     }
-//   }
-
-//   Hypnotise(){
-//     if (this.isRandomEvent(100)){
-//       //oh-ohooh Derren, you are just a littel to good at this XoP! 
-//       this.updateStats(0, 0, -20, 40, -70);
-//     }else{
-//       this.updateStats(10, 10, 10, 20, -1);
-//     }
-//   }
-// }
-
-// rover = new Dog("rover", 10, 10, 10, 10)
-// console.log(rover.listPetStats())
-// rover.sleep()
-// console.log(rover.listPetStats());
