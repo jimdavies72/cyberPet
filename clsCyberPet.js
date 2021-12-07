@@ -153,6 +153,7 @@ module.exports = class CyberPet {
     this.ageCounter++
     if(this.ageCounter >= 5){
       this.age++
+      this.ageCounter = 0
     }
 
     if (this.age >= this.maxAge){
@@ -190,7 +191,7 @@ module.exports = class CyberPet {
 
   sitAndStare() {
     //life goes on, even when you are doing nothing....
-    this.updateStats(2, 2, -2, 2, -1);
+    this.updateStats(2, 2, -2, 2, -1); 
   }
 
   play() {
