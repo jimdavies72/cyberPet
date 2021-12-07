@@ -57,7 +57,7 @@ class CyberPet {
     this._generalHealth = value;
   }
 
-  listPetStats = () => {
+  listStats = () => {
     return {
       pet: this.constructor.name,
       name: this._petName,
@@ -76,28 +76,28 @@ class CyberPet {
     this.happiness += happiness;
     this.tiredness += tiredness;
     this.generalHealth += generalHealth;
-    this.checkStats()
+    this.checkStats();
     //TODO: add game over scenario
-    if(this._isAlive === false){
+    if (this._isAlive === false) {
       //game over
     }
   };
 
   //TODO: checkStats currently only checks if pet is alive, need to check too tired/bored
-  checkStats = () =>{
-    const object = this.listPetStats()
-    for (let [key, value] of Object.entries(object)){
-      if (key === 'hunger' && value <= 0){
+  checkStats = () => {
+    const object = this.listPetStats();
+    for (let [key, value] of Object.entries(object)) {
+      if (key === "hunger" && value <= 0) {
         this._isAlive = false;
-      }else if (key === 'thirst' && value >= 100){
+      } else if (key === "thirst" && value >= 100) {
         this._isAlive = false;
-      } else if (key === 'generalHealth' && value <= 0){
-         this._isAlive = false;
+      } else if (key === "generalHealth" && value <= 0) {
+        this._isAlive = false;
       } else {
-         this._isAlive = true;
+        this._isAlive = true;
       }
     }
-  }
+  };
 
   isRandomEvent = (odds) => {
     const result = CyberPet.getRandomInt(1, odds);
@@ -114,34 +114,34 @@ class CyberPet {
   };
 
   feed() {
-    if (this.isRandomEvent(2)){
+    if (this.isRandomEvent(2)) {
       // pet knocks over food bowl, only eats half
       this.updateStats(-5, 0, 5, 0, -2);
-    }else {
+    } else {
       this.updateStats(-10, 5, 10, 5, -1);
     }
   }
 
   giveWater() {
-    if (this.isRandomEvent(5)){
+    if (this.isRandomEvent(5)) {
       // pet drinks way too much water
       this.updateStats(0, -20, -10, 10, -5);
-    }else{
+    } else {
       this.updateStats(0, -10, 5, -5, 0);
     }
   }
 
   sleep() {
-    if (this.isRandomEvent(3)){
+    if (this.isRandomEvent(3)) {
       // pet is woken early is grumpy
       this.updateStats(5, 0, -20, -10, -1);
-    }else {
+    } else {
       this.updateStats(10, 0, 10, -20, 0);
     }
   }
 
   play() {
-    if (this.isRandomEvent(20)){
+    if (this.isRandomEvent(20)) {
       //accidental injury
       this.updateStats(5, 10, -20, 20, -20);
     } else {
@@ -150,15 +150,15 @@ class CyberPet {
   }
 
   visitVet() {
-
-    if (this.isRandomEvent(100)){
+    if (this.isRandomEvent(100)) {
       //vet accidentally puts pet to sleep
       this.updateStats(0, 0, 0, 0, -100);
-    }else {
+    } else {
       this.updateStats(0, 0, 0, 0, 20);
     }
   }
-}
+};
+
 
 class Dog extends CyberPet {
   constructor(petName,hunger, thirst, happiness, tiredness) {
