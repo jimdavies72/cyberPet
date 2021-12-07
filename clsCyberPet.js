@@ -66,10 +66,10 @@ module.exports = class CyberPet {
   }
 
   get ageCounter() {
-    return this.ageCounter;
+    return this._ageCounter;
   }
   set ageCounter(value) {
-    this.ageCounter = value;
+    this._ageCounter = value;
   }
 
   get generalHealth() {
@@ -79,32 +79,36 @@ module.exports = class CyberPet {
     this._generalHealth = value;
   }
 
-  listStats = () => {
+  listStats = (allStats = false) => {
+    
+    
     return {
       pet: this.constructor.name,
       name: this._petName,
       age: this._age,
+      ageCounter: this._ageCounter,
       hunger: this._hunger,
       thirst: this._thirst,
       happiness: this._happiness,
       tiredness: this._tiredness,
+      generalHealth: this._generalHealth,
       alive: this._isAlive,
     };
+
   };
 
   //TODO: perhaps have it so each animal passes different values. at the moment they are static across all animals.
   updateStats = (hunger, thirst, happiness, tiredness, generalHealth) => {
-    let currentHunger = this.hunger;
-    currentHunger += hunger;
-    console.log("current Hunger", currentHunger)
-    //this.hunger = currentHunger;
+    this.hunger += hunger;
     this.thirst += thirst;
     this.happiness += happiness;
     this.tiredness += tiredness;
     this.generalHealth += generalHealth;
-    this.#lifeTick();
+    
+    // pet ages
+    this.lifeTick();
     this.checkStats();
-    //TODO: add game over scenario
+    // //TODO: add game over scenario
     if (this._isAlive === false) {
       //game over
     }
@@ -112,11 +116,11 @@ module.exports = class CyberPet {
 
   //TODO: checkStats currently only checks if pet is alive, need to check too tired/bored
   checkStats = () => {
-    if (CyberPet.isRandomEvent(100)) {
+    if (CyberPet.isRandomEvent(100) === true) {
       // random unexplained death, because life is just like that.
       this._isAlive = false;
     } else {
-      const object = this.listPetStats();
+      const object = this.listStats();
       for (let [key, value] of Object.entries(object)) {
         if (key === "hunger" && value <= 0) {
           this._isAlive = false;
@@ -131,9 +135,8 @@ module.exports = class CyberPet {
     }
   };
 
-  isRandomEvent = (odds) => {
-    const result = CyberPet.getRandomInt(1, odds);
-    if (result === 1) {
+  static isRandomEvent = (odds) => {
+    if (CyberPet.getRandomInt(1, odds) === 1) {
       return true;
     }
     return false;
@@ -145,9 +148,8 @@ module.exports = class CyberPet {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  #lifeTick = () => {
+  lifeTick = () => {
     // Age continues...
-    this.updateStats(2, 1, -2, 2, -2)
     this.ageCounter++
     if(this.ageCounter >= 5){
       this.age++
@@ -184,6 +186,11 @@ module.exports = class CyberPet {
     } else {
       this.updateStats(10, 0, 10, -20, 0);
     }
+  }
+
+  sitAndStare() {
+    //life goes on, even when you are doing nothing....
+    this.updateStats(2, 2, -2, 2, -1);
   }
 
   play() {
