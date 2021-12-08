@@ -18,6 +18,8 @@
   "homepage": "https://github.com/jimdavies72/cyberPet#readme",
   "dependencies": {
     "cfonts": "^2.10.0",
-    "inquirer": "^8.2.0"
+    "chalk": "^5.0.0",
+    "inquirer": "^8.2.0",
+    "lodash": "^4.17.21"
   }
 }

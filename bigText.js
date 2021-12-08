@@ -1,4 +1,4 @@
-const CFonts = require("cfonts");
+const CFonts = require('cfonts');
 
 const renderBigText = (text, object) => {
   CFonts.say(text, object)
