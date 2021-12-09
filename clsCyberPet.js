@@ -3,7 +3,7 @@ export class CyberPet {
   static counter = 0;
 
   constructor(petName, maxAge, hunger, thirst, happiness, tiredness) {
-    this._petName = petName;
+    this._petName = petName.charAt(0).toUpperCase() + petName.slice(1);
     this._maxAge = maxAge;
     this._hunger = hunger;
     this._thirst = thirst;
@@ -122,10 +122,30 @@ export class CyberPet {
   //TODO: perhaps have it so each animal passes different values. at the moment they are static across all animals.
   updateStats = (hunger, thirst, happiness, tiredness, generalHealth) => {
     this.hunger += hunger;
+    if (this.hunger < 0){
+      //minimum hunger is 0
+      this.hunger = 0
+    }
     this.thirst += thirst;
+    if (this.thirst < 0) {
+      //minimum thirst is 0
+      this.thirst = 0;
+    }
     this.happiness += happiness;
+    if (this.happiness > 100) {
+      //maximum happiness is 100
+      this.happiness = 100;
+    }
     this.tiredness += tiredness;
+    if (this.tiredness < 0) {
+      //minimum tiredness is 0
+      this.tiredness = 0;
+    }
     this.generalHealth += generalHealth;
+    if (this.generalHealth > 100) {
+      //minimum generalHealth is 100
+      this.generalHealth = 100;
+    }
 
     // pet ages
     this.lifeTick();
@@ -150,7 +170,7 @@ export class CyberPet {
     }
   };
 
-  //TODO: checkStats currently only checks if pet is alive, need to check too tired/bored
+  //TODO: checkStats currently only checks if pet is alive, need to check too tired/bored. for now it will work in the same way as hunger thirst etc...
   checkStats = () => {
     if (CyberPet.isRandomEvent(100) === true) {
       // random unexplained death, because life is just like that.
@@ -170,6 +190,10 @@ export class CyberPet {
         } else if (key === "generalHealth" && parseInt(value) <= 0) {
           this.isAlive = false;
           break;
+        }else if (key === "happiness" && parseInt(value) <= 0) {
+          this.isAlive = false;
+          break;
+        }else if (key === "tiredness" && parseInt(value) >=100) {
         } else {
           this.isAlive = true;
         }

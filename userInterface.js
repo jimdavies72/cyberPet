@@ -26,7 +26,7 @@ export const startGame = async () => {
       if (response.nCGame === "New Game") {
         //new game
 
-        // delete stored data as a new game will overwrite if necessary
+        // delete any current stored data as a new game will overwrite if necessary
         deleteStorage(storedItem);
         console.clear();
         initNewGame();
@@ -54,7 +54,7 @@ const initNewGame = async () =>{
       myCyberPet = new Rabbit(response.petName, initStats[2][1], initStats[2][2], initStats[2][3], initStats[2][4])
       specificActions = _.concat(commonActions, ["stroke", "hypnotise"]); 
     }
-    myCyberPet.listStats()
+    console.log(myCyberPet.listStats());
     console.log("\n")
   
     gameLoop()
@@ -66,7 +66,6 @@ const initNewGame = async () =>{
 // main game loop
 const gameLoop = async () => {
   try{
-
     //lets check to see if the pet is still alive
     if (myCyberPet.isAlive === false){
       // dead pet, game over.....
@@ -88,8 +87,6 @@ const gameLoop = async () => {
       console.clear()
       renderBigText("Good-Bye", bigTextArray[2]);
     }
-
-
   } catch (error){
     console.log(`😣 Error: ${error.message} has occured. game has shut down. 😪`)
   }
@@ -97,14 +94,17 @@ const gameLoop = async () => {
 
 const action = (response) => {
   if (response.action === "quitAndSave") {
+    // get the current game state object and save it to the local node storage
     let lS = myCyberPet.listStats();
     setStorage(storedItem, lS);
     return true
   } else {
+    // call the pet's appropriate method
     myCyberPet[response.action]();
     console.clear();
     console.log(myCyberPet.listStats());
     if (myCyberPet.gameMessage !== "") {
+      // display any generated message
       console.log("\n");
       // could use Bottom Bar but doesnt seem to add anything different to this...
       console.log(chalk.red.bgCyan.bold(myCyberPet.gameMessage));
