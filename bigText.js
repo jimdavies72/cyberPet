@@ -1,9 +1,32 @@
-const CFonts = require('cfonts');
+import figlet from 'figlet';
 
-const renderBigText = (text, object) => {
-  CFonts.say(text, object)
+export const renderBigText = (text, object) => {
 
+  figlet.text(
+    text, object,
+    
+    (err, data) => {
+      if (err) {
+        console.log("Something went wrong...");
+        console.dir(err);
+        return;
+      }
+      console.log(data);
+      
+    }
+
+  );
 }
 
-module.exports = {renderBigText}
 
+// a function that lists all the figlet fonts.
+const listFigletFonts = () => {
+  figlet.fonts(function (err, fonts) {
+    if (err) {
+      console.log("something went wrong...");
+      console.dir(err);
+      return;
+    }
+    console.dir(fonts);
+  });
+}

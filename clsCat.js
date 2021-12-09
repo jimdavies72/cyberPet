@@ -1,9 +1,9 @@
-let cyberPet = require("./clsCyberPet.js");
+import {CyberPet} from "./clsCyberPet.js";
 
-class Cat extends cyberPet {
+export class Cat extends CyberPet {
   constructor(petName, hunger, thirst, happiness, tiredness) {
     //randomise the maximum pet age
-    const maxAge = cyberPet.getRandomInt(10, 15);
+    const maxAge = CyberPet.getRandomInt(10, 15);
     super(petName, maxAge, hunger, thirst, happiness, tiredness);
   }
 
@@ -20,15 +20,10 @@ class Cat extends cyberPet {
   letOut() {
     if (Cat.isRandomEvent(2)) {
       //mouse catcher extrordinaire! best day ever!
-      this.gameMessage = "Nom! Nom! Nom! Mice!"
+      this.gameMessage = "Nom! Nom Nom! Mice!"
       this.updateStats(-20, 10, 30, 20, -4);
     } else {
       this.updateStats(-10, -10, 10, 20, -1);
     }
   }
 };
-
-
-module.exports = {
-  Cat: Cat
-}

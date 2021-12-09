@@ -1,6 +1,6 @@
 
 // async function that awaits a key press or ctrl-c (to kill)
-const keypress = async () => {
+export const keypress = async () => {
   process.stdin.setRawMode(true);
   return new Promise((resolve) =>
     process.stdin.once("data", (data) => {
@@ -13,8 +13,4 @@ const keypress = async () => {
       resolve();
     })
   );
-};
-
-module.exports = {
-  keypress: keypress,
 };
