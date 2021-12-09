@@ -43,3 +43,27 @@ export const initStats = [
   ["Cat", 50, 20, 60, 10],
   ["Rabbit", 50, 20, 60, 10],
 ];
+
+export const bigTextArray = [
+  {
+    font: "doh",
+    horizontalLayout: "default",
+    verticalLayout: "default",
+    width: 200,
+    whitespaceBreak: true,
+  },
+  {
+    font: "isometric3",
+    horizontalLayout: "default",
+    verticalLayout: "default",
+    width: 200,
+    whitespaceBreak: true,
+  },
+  {
+    font: "blocks",
+    horizontalLayout: "default",
+    verticalLayout: "default",
+    width: 200,
+    whitespaceBreak: true,
+  },
+];

@@ -4,21 +4,38 @@ import {Cat} from "./clsCat.js";
 import {Rabbit} from "./clsRabbit.js";
 import chalk from 'chalk'
 import inquirer from "inquirer";
-import {gameQuestions, commonActions, initStats} from "./questions.js";
+import {setStorage, getStorage, deleteStorage} from "./localStorage.js";
+import {gameQuestions, commonActions, initStats, bigTextArray} from "./questions.js";
+import {renderBigText} from "./bigText.js";
 
 // initialise the CyberPet object
 let myCyberPet
 export let specificActions = [];
+const storedItem = 'cyberPet'
 
 export const startGame = async () => {
-  let response = await inquirer.prompt(gameQuestions[0])
-  if (response.nCGame === "New Game") {
-    //new game
-    console.clear();
-    initNewGame();
-  } else {
-    // continue last game
-  }
+    // returnedStored
+    const rS = getStorage(storedItem)
+    if (rS === ""){
+      //no saved game so jump straight to new game
+      console.clear();
+      initNewGame();
+    } else{
+      // offer chance for new game or load saved game
+      let response = await inquirer.prompt(gameQuestions[0])
+      if (response.nCGame === "New Game") {
+        //new game
+
+        // delete stored data as a new game will overwrite if necessary
+        deleteStorage(storedItem);
+        console.clear();
+        initNewGame();
+      } else {
+        // continue last saved game
+        continueSavedGame(rS);
+      }
+    }
+
 }
 
 const initNewGame = async () =>{
@@ -49,8 +66,11 @@ const initNewGame = async () =>{
 // main game loop
 const gameLoop = async () => {
   try{
+
+    //lets check to see if the pet is still alive
     if (myCyberPet.isAlive === false){
       // dead pet, game over.....
+      deleteStorage(storedItem);
       console.log(chalk.yellowBright.bgRedBright.bold(myCyberPet.gameMessage));
       return
     }
@@ -62,8 +82,14 @@ const gameLoop = async () => {
       choices: specificActions
     }])
       
-    action(response)
-    gameLoop()  
+    if (action(response) === false){
+      gameLoop()
+    }else {
+      console.clear()
+      renderBigText("Good-Bye", bigTextArray[2]);
+    }
+
+
   } catch (error){
     console.log(`😣 Error: ${error.message} has occured. game has shut down. 😪`)
   }
@@ -71,18 +97,40 @@ const gameLoop = async () => {
 
 const action = (response) => {
   if (response.action === "quitAndSave") {
-    // TODO: quit the game. save to local storage
-    return;
+    let lS = myCyberPet.listStats();
+    setStorage(storedItem, lS);
+    return true
   } else {
     myCyberPet[response.action]();
     console.clear();
     console.log(myCyberPet.listStats());
     if (myCyberPet.gameMessage !== "") {
       console.log("\n");
-      // could use Bottom BAr but doesnt seem to add anything different to this...
+      // could use Bottom Bar but doesnt seem to add anything different to this...
       console.log(chalk.red.bgCyan.bold(myCyberPet.gameMessage));
       myCyberPet.gameMessage = "";
     }
     console.log("\n");
+    return false
   }
+}
+
+const continueSavedGame = (rS) =>{
+  //TODO: Find a way where the object can be created from the a variable holding the class name. for now, its ifs buts and maybes.
+  if (rS.pet == "Dog"){
+    myCyberPet = new Dog(rS.name, rS.maxAge, rS.hunger, rS.thirst, rS.happiness, rS.tiredness)
+    specificActions = _.concat(commonActions, ["fetch", "swim", "tugOfWar"]);
+
+  }else if (rS.pet == "Cat") {
+    myCyberPet = new Cat(rS.name, rS.maxAge, rS.hunger, rS.thirst, rS.happiness, rS.tiredness)
+    specificActions = _.concat(commonActions, ["stroke", "letOut"]);
+
+  }else if (rS.pet == "Rabbit") {
+    myCyberPet = new Rabbit(rS.name, rS.maxAge, rS.hunger, rS.thirst, rS.happiness,rS.tiredness);
+    specificActions = _.concat(commonActions, ["stroke", "hypnotise"]); 
+  }
+  myCyberPet.loadNewGame(rS);
+  myCyberPet.listStats();
+  console.log("\n");
+  gameLoop();
 }

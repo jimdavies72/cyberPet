@@ -3,33 +3,9 @@ import {renderBigText} from "./bigText.js";
 import {startGame} from "./userInterface.js";
 import {keypress} from "./tools.js";
 import chalk from "chalk";
+import {bigTextArray} from "./questions.js";
 
-//TODO: Save unfinished game to node.js local storage
-// https://javascript.plainenglish.io/libraries-for-using-localstorage-in-your-node-js-project-3ff5ac1a3512
 
-const bigTextArray = [
-  {
-    font: "doh",
-    horizontalLayout: "default",
-    verticalLayout: "default",
-    width: 200,
-    whitespaceBreak: true,
-  },
-  {
-    font: "isometric3",
-    horizontalLayout: "default",
-    verticalLayout: "default",
-    width: 200,
-    whitespaceBreak: true,
-  },
-  {
-    font: "blocks",
-    horizontalLayout: "default",
-    verticalLayout: "default",
-    width: 200,
-    whitespaceBreak: true,
-  },
-];
 
 const splashScreen = () =>{
   console.clear()

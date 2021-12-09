@@ -108,6 +108,7 @@ export class CyberPet {
       pet: this.constructor.name,
       name: this.petName,
       age: this.age,
+      maxAge: this.maxAge,
       ageCounter: this.ageCounter,
       hunger: this.hunger,
       thirst: this.thirst,
@@ -159,12 +160,16 @@ export class CyberPet {
     } else {
       const object = this.listStats();
       for (let [key, value] of Object.entries(object)) {
-        if (key === "hunger" && value >= 0) {
+        
+        if (key === "hunger" && parseInt(value) >= 100) {
           this.isAlive = false;
-        } else if (key === "thirst" && value >= 100) {
+          break;
+        } else if (key === "thirst" && parseInt(value) >= 100) {
           this.isAlive = false;
-        } else if (key === "generalHealth" && value <= 0) {
+          break;
+        } else if (key === "generalHealth" && parseInt(value) <= 0) {
           this.isAlive = false;
+          break;
         } else {
           this.isAlive = true;
         }
@@ -174,6 +179,16 @@ export class CyberPet {
       }
     }
   };
+
+  loadNewGame = (object) =>{
+    console.log(object)
+   
+      this.age = object.age;
+      this.maxAge = object.maxAge;
+      this.ageCounter = object.ageCounter;
+      this.generalHealth = object.generalHealth;
+      this.isAlive = true;
+  }
 
   static isRandomEvent = (odds) => {
     if (CyberPet.getRandomInt(1, odds) === 1) {
