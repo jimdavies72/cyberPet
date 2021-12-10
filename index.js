@@ -3,7 +3,7 @@ import {renderBigText} from "./bigText.js";
 import {startGame} from "./userInterface.js";
 import {keypress} from "./tools.js";
 import chalk from "chalk";
-import {bigTextArray} from "./questions.js";
+import {bigTextArray} from "./arrays.js";
 
 
 

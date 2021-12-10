@@ -5,7 +5,7 @@ import {Rabbit} from "./clsRabbit.js";
 import chalk from 'chalk'
 import inquirer from "inquirer";
 import {setStorage, getStorage, deleteStorage} from "./localStorage.js";
-import {gameQuestions, commonActions, initStats, bigTextArray} from "./questions.js";
+import {gameQuestions, commonActions, initStats, bigTextArray} from "./arrays.js";
 import {renderBigText} from "./bigText.js";
 
 // initialise the CyberPet object
